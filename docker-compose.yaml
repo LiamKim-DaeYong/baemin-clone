@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_DB: common_db
+      POSTGRES_USER: common_user
+      POSTGRES_PASSWORD: common_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./demin-auth-service/database/schema/init.sql:/docker-entrypoint-initdb.d/init_auth_service.sql
+      - ./demin-coupon-service/database/schema/init.sql:/docker-entrypoint-initdb.d/init_coupon_service.sql
+      - ./demin-menu-service/database/schema/init.sql:/docker-entrypoint-initdb.d/init_menu_service.sql
+      - ./demin-order-service/database/schema/init.sql:/docker-entrypoint-initdb.d/init_order_service.sql
+      - ./demin-payment-service/database/schema/init.sql:/docker-entrypoint-initdb.d/init_payment_service.sql
+      - ./demin-point-service/database/schema/init.sql:/docker-entrypoint-initdb.d/init_point_service.sql
+      - ./demin-relay-service/database/schema/init.sql:/docker-entrypoint-initdb.d/init_relay_service.sql
+      - ./demin-rider-service/database/schema/init.sql:/docker-entrypoint-initdb.d/init_rider_service.sql
+      - ./demin-settlement-service/database/schema/init.sql:/docker-entrypoint-initdb.d/init_settlement_service.sql
+      - ./demin-store-service/database/schema/init.sql:/docker-entrypoint-initdb.d/init_store_service.sql
+volumes:
+  postgres-data:

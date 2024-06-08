@@ -11,7 +11,7 @@ include(
     "demin-point-service",
     "demin-coupon-service",
     "demin-store-service",
-    "demin-riders-service",
+    "demin-rider-service",
 )
 
 pluginManagement {
