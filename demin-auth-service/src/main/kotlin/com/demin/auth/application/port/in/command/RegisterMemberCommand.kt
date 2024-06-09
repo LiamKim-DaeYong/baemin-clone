@@ -1,5 +1,6 @@
 package com.demin.auth.application.port.`in`.command
 
+import com.demin.common.address.AddressDto
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
@@ -12,6 +13,10 @@ data class RegisterMemberCommand(
 
     @field:NotBlank(message = "Password must not be blank")
     @field:Size(min = 8, message = "Password must be at least 8 characters long")
+    @field:Pattern(
+        regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}\$",
+        message = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+    )
     val password: String,
 
     @field:NotBlank(message = "Name must not be blank")
@@ -20,10 +25,12 @@ data class RegisterMemberCommand(
     @field:NotBlank(message = "Nickname must not be blank")
     val nickname: String,
 
-    @field:NotBlank(message = "Address must not be blank")
-    val address: String,
+    val address: AddressDto,
 
     @field:NotBlank(message = "Phone number must not be blank")
-    @field:Pattern(regexp = "^\\d{10,15}\$", message = "Phone number should be valid")
+    @field:Pattern(
+        regexp = "^(\\+\\d{1,3}[- ]?)?(010|011|016|017|018|019)([- ]?\\d{3,4})[- ]?\\d{4}\$",
+        message = "Phone number should be valid"
+    )
     val phoneNumber: String
 )

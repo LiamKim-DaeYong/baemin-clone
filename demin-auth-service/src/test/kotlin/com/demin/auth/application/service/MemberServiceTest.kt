@@ -6,6 +6,7 @@ import com.demin.auth.application.port.out.FindMemberPort
 import com.demin.auth.application.port.out.SaveMemberPort
 import com.demin.auth.application.port.out.UpdateMemberPort
 import com.demin.auth.domain.Member
+import com.demin.common.address.AddressDto
 import com.demin.common.enums.MemberGrade
 import com.demin.common.enums.MemberRole
 import com.demin.common.enums.MemberStatus
@@ -39,7 +40,11 @@ class MemberServiceTest : FunSpec({
             email = "test@example.com",
             password = "password123",
             name = "John Doe",
-            address = "123 Main St",
+            address = AddressDto(
+                zipCode = "123",
+                address = "Main St",
+                detailAddress = "123-45"
+            ),
             phoneNumber = "1234567890",
             nickname = "johndoe"
         )
@@ -54,7 +59,7 @@ class MemberServiceTest : FunSpec({
             memberEmail = Member.MemberEmail(command.email),
             memberPassword = Member.MemberPassword(encryptedPassword),
             memberName = Member.MemberName(command.name),
-            memberAddress = Member.MemberAddress(command.address),
+            memberAddress = command.address,
             memberPhoneNumber = Member.MemberPhoneNumber(command.phoneNumber),
             memberNickname = Member.MemberNickname(command.nickname),
             grade = MemberGrade.BRONZE,
@@ -77,7 +82,11 @@ class MemberServiceTest : FunSpec({
             memberEmail = Member.MemberEmail("test@example.com"),
             memberPassword = Member.MemberPassword(passwordEncoder.encode("password123")),
             memberName = Member.MemberName("John Doe"),
-            memberAddress = Member.MemberAddress("123 Main St"),
+            memberAddress = AddressDto(
+                zipCode = "123",
+                address = "Main St",
+                detailAddress = "123-45"
+            ),
             memberPhoneNumber = Member.MemberPhoneNumber("1234567890"),
             memberNickname = Member.MemberNickname("johndoe"),
             grade = MemberGrade.BRONZE,
@@ -141,7 +150,11 @@ class MemberServiceTest : FunSpec({
             memberEmail = Member.MemberEmail("test@example.com"),
             memberPassword = Member.MemberPassword("password123"),
             memberName = Member.MemberName("John Doe"),
-            memberAddress = Member.MemberAddress("123 Main St"),
+            memberAddress = AddressDto(
+                zipCode = "123",
+                address = "Main St",
+                detailAddress = "123-45"
+            ),
             memberPhoneNumber = Member.MemberPhoneNumber("1234567890"),
             memberNickname = Member.MemberNickname("johndoe"),
             grade = MemberGrade.BRONZE,

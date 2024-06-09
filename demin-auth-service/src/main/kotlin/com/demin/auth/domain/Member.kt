@@ -1,6 +1,7 @@
 package com.demin.auth.domain
 
 import com.demin.auth.adapter.out.persistence.MemberEntity
+import com.demin.common.address.AddressDto
 import com.demin.common.enums.MemberGrade
 import com.demin.common.enums.MemberRole
 import com.demin.common.enums.MemberStatus
@@ -11,7 +12,7 @@ data class Member private constructor(
     val email: MemberEmail,
     val password: MemberPassword,
     val name: MemberName,
-    val address: MemberAddress,
+    val address: AddressDto,
     val phoneNumber: MemberPhoneNumber,
     val nickname: MemberNickname,
     val grade: MemberGrade,
@@ -21,7 +22,6 @@ data class Member private constructor(
     val failedLoginAttempts: Int,
     val lockedUntil: LocalDateTime?,
     val refreshToken: RefreshToken?,
-    val permissions: List<MemberPermission>,
     val createdAt: LocalDateTime?,
     val createdBy: String?,
     val updatedAt: LocalDateTime?,
@@ -33,7 +33,7 @@ data class Member private constructor(
             memberEmail: MemberEmail,
             memberPassword: MemberPassword,
             memberName: MemberName,
-            memberAddress: MemberAddress,
+            memberAddress: AddressDto,
             memberPhoneNumber: MemberPhoneNumber,
             memberNickname: MemberNickname,
             grade: MemberGrade,
@@ -43,7 +43,6 @@ data class Member private constructor(
             failedLoginAttempts: Int = 0,
             lockedUntil: LocalDateTime? = null,
             refreshToken: RefreshToken? = null,
-            permissions: List<MemberPermission> = listOf(),
             createdAt: LocalDateTime? = null,
             createdBy: String? = null,
             updatedAt: LocalDateTime? = null,
@@ -64,7 +63,6 @@ data class Member private constructor(
                 failedLoginAttempts = failedLoginAttempts,
                 lockedUntil = lockedUntil,
                 refreshToken = refreshToken,
-                permissions = permissions,
                 createdAt = createdAt,
                 createdBy = createdBy,
                 updatedAt = updatedAt,
@@ -79,7 +77,7 @@ data class Member private constructor(
                 memberPassword = MemberPassword(memberEntity.password),
                 memberName = MemberName(memberEntity.name),
                 memberNickname = MemberNickname(memberEntity.nickname),
-                memberAddress = MemberAddress(memberEntity.address),
+                memberAddress = AddressDto.fromEntity(memberEntity.address),
                 memberPhoneNumber = MemberPhoneNumber(memberEntity.phoneNumber),
                 status = memberEntity.status,
                 role = memberEntity.role,
@@ -87,7 +85,6 @@ data class Member private constructor(
                 failedLoginAttempts = memberEntity.failedLoginAttempts,
                 lockedUntil = memberEntity.lockedUntil,
                 refreshToken = memberEntity.refreshToken?.let { RefreshToken(it) },
-                permissions = memberEntity.permissions.map { MemberPermission(it) },
                 grade = memberEntity.grade,
                 createdAt = memberEntity.createdAt,
                 createdBy = memberEntity.createdBy,
@@ -101,10 +98,8 @@ data class Member private constructor(
     data class MemberEmail(val value: String)
     data class MemberPassword(val value: String)
     data class MemberName(val value: String)
-    data class MemberAddress(val value: String)
     data class MemberPhoneNumber(val value: String)
     data class MemberNickname(val value: String)
-    data class MemberPermission(val value: String)
     data class RefreshToken(val value: String)
 
     fun toEntity(): MemberEntity {
@@ -114,7 +109,7 @@ data class Member private constructor(
             password = this.password.value,
             name = this.name.value,
             nickname = this.nickname.value,
-            address = this.address.value,
+            address = this.address.toEntity(),
             phoneNumber = this.phoneNumber.value,
             status = this.status,
             role = this.role,
@@ -122,7 +117,6 @@ data class Member private constructor(
             failedLoginAttempts = this.failedLoginAttempts,
             lockedUntil = this.lockedUntil,
             refreshToken = this.refreshToken?.value,
-            permissions = this.permissions.map { it.value },
             grade = this.grade
         )
     }

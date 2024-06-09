@@ -1,5 +1,6 @@
 package com.demin.auth.adapter.out.persistence
 
+import com.demin.common.address.Address
 import com.demin.common.AuditableEntity
 import com.demin.common.enums.MemberGrade
 import com.demin.common.enums.MemberRole
@@ -8,7 +9,7 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "members", uniqueConstraints = [UniqueConstraint(columnNames = ["email"])])
+@Table(name = "member", uniqueConstraints = [UniqueConstraint(columnNames = ["email"])])
 class MemberEntity(
     @Id
     @Column(name = "member_id", length = 36, nullable = false, updatable = false)
@@ -26,8 +27,8 @@ class MemberEntity(
     @Column(nullable = false)
     val nickname: String,
 
-    @Column(nullable = false)
-    val address: String,
+    @Embedded
+    val address: Address,
 
     @Column(nullable = false)
     val phoneNumber: String,
@@ -51,11 +52,6 @@ class MemberEntity(
 
     @Column(nullable = true)
     val refreshToken: String? = null,
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "member_permissions", joinColumns = [JoinColumn(name = "member_id")])
-    @Column(name = "permission")
-    val permissions: List<String>,
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

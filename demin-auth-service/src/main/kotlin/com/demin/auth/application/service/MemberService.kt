@@ -38,7 +38,7 @@ class MemberService(
             memberEmail = Member.MemberEmail(command.email),
             memberPassword = Member.MemberPassword(encryptedPassword),
             memberName = Member.MemberName(command.name),
-            memberAddress = Member.MemberAddress(command.address),
+            memberAddress = command.address,
             memberPhoneNumber = Member.MemberPhoneNumber(command.phoneNumber),
             memberNickname = Member.MemberNickname(command.nickname),
             grade = MemberGrade.BRONZE,
@@ -47,8 +47,7 @@ class MemberService(
             lastLoginAt = null,
             failedLoginAttempts = 0,
             lockedUntil = null,
-            refreshToken = null,
-            permissions = emptyList()
+            refreshToken = null
         )
 
         return saveMemberPort.save(member)
@@ -66,7 +65,7 @@ class MemberService(
             password = updatedPassword?.let { Member.MemberPassword(it) } ?: existingMember.password,
             name = command.name?.let { Member.MemberName(it) } ?: existingMember.name,
             nickname = command.nickname?.let { Member.MemberNickname(it) } ?: existingMember.nickname,
-            address = command.address?.let { Member.MemberAddress(it) } ?: existingMember.address,
+            address = command.address ?: existingMember.address,
             phoneNumber = command.phoneNumber?.let { Member.MemberPhoneNumber(it) } ?: existingMember.phoneNumber
         )
 

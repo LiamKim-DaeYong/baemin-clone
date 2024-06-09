@@ -11,6 +11,7 @@ import com.demin.common.response.ApiResponse
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 
 @WebAdapter
 @RequestMapping("/api/v1/members")
@@ -34,10 +35,16 @@ class MemberController(
     @PostMapping
     fun registerMember(@RequestBody @Valid command: RegisterMemberCommand): ResponseEntity<ApiResponse<Member>> {
         val member = registerMemberUseCase.registerMember(command)
-        return ResponseEntity.ok(ApiResponse.success(member))
+        val location = ServletUriComponentsBuilder
+            .fromCurrentRequest()
+            .path("/{memberId}")
+            .buildAndExpand(member.memberId.value)
+            .toUri()
+
+        return ResponseEntity.created(location).body(ApiResponse.success(member))
     }
 
-    @PutMapping("/{memberId}")
+    @PatchMapping("/{memberId}")
     fun updateMember(
         @PathVariable memberId: String,
         @RequestBody @Valid command: UpdateMemberCommand
