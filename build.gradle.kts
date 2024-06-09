@@ -13,6 +13,10 @@ plugins {
 val javaVersion: String by project
 val projectGroup: String by project
 val applicationVersion: String by project
+val postgresqlVersion: String by project
+val kotestVersion: String by project
+val mockkVersion: String by project
+val kotestExtensionsVersion: String by project
 java.sourceCompatibility = JavaVersion.valueOf("VERSION_$javaVersion")
 
 allprojects {
@@ -35,17 +39,20 @@ subprojects {
 
     dependencies {
         implementation("org.springframework.boot:spring-boot-starter-web")
+        implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+        implementation("org.springframework.boot:spring-boot-starter-validation")
         implementation("org.springframework.kafka:spring-kafka")
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
         implementation("org.jetbrains.kotlin:kotlin-reflect")
         implementation("org.jetbrains.kotlin:kotlin-stdlib")
 
-        implementation("org.postgresql:postgresql:42.3.1")
+        implementation("org.postgresql:postgresql:$postgresqlVersion")
 
         testImplementation("org.springframework.boot:spring-boot-starter-test")
-        testImplementation("io.kotest:kotest-runner-junit5:5.4.2")
-        testImplementation("io.kotest:kotest-assertions-core:5.4.2")
-        testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
+        testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+        testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+        testImplementation("io.mockk:mockk:$mockkVersion")
+        testImplementation("io.kotest.extensions:kotest-extensions-spring:$kotestExtensionsVersion")
         annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
         kapt("org.springframework.boot:spring-boot-configuration-processor")
     }

@@ -14,3 +14,7 @@ spring:
     properties:
       hibernate:
         default_schema: point
+
+kafka:
+  clusters:
+    bootstrap-servers: http://localhost:9092
