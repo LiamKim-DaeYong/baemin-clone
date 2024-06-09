@@ -12,18 +12,8 @@ data class AddressDto(
     @field:NotBlank(message = "Detail Address must not be blank")
     val detailAddress: String
 ) {
-    companion object {
-        fun fromEntity(entity: Address): AddressDto {
-            return AddressDto(
-                zipCode = entity.zipCode,
-                address = entity.address,
-                detailAddress = entity.detailAddress
-            )
-        }
-    }
-
-    fun toEntity(): Address {
-        return Address(
+    fun toEntity(): AddressEntity {
+        return AddressEntity(
             address = this.address,
             detailAddress = this.detailAddress,
             zipCode = this.zipCode

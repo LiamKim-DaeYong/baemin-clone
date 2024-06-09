@@ -1,6 +1,5 @@
 package com.demin.auth.domain
 
-import com.demin.auth.adapter.out.persistence.MemberEntity
 import com.demin.core.address.AddressDto
 import com.demin.core.enums.MemberGrade
 import com.demin.core.enums.MemberRole
@@ -69,29 +68,6 @@ data class Member private constructor(
                 updatedBy = updatedBy
             )
         }
-
-        fun fromEntity(memberEntity: MemberEntity): Member {
-            return generateMember(
-                memberId = MemberId(memberEntity.id),
-                memberEmail = MemberEmail(memberEntity.email),
-                memberPassword = MemberPassword(memberEntity.password),
-                memberName = MemberName(memberEntity.name),
-                memberNickname = MemberNickname(memberEntity.nickname),
-                memberAddress = AddressDto.fromEntity(memberEntity.address),
-                memberPhoneNumber = MemberPhoneNumber(memberEntity.phoneNumber),
-                status = memberEntity.status,
-                role = memberEntity.role,
-                lastLoginAt = memberEntity.lastLoginAt,
-                failedLoginAttempts = memberEntity.failedLoginAttempts,
-                lockedUntil = memberEntity.lockedUntil,
-                refreshToken = memberEntity.refreshToken?.let { RefreshToken(it) },
-                grade = memberEntity.grade,
-                createdAt = memberEntity.createdAt,
-                createdBy = memberEntity.createdBy,
-                updatedAt = memberEntity.updatedAt,
-                updatedBy = memberEntity.updatedBy
-            )
-        }
     }
 
     data class MemberId(val value: String)
@@ -101,23 +77,4 @@ data class Member private constructor(
     data class MemberPhoneNumber(val value: String)
     data class MemberNickname(val value: String)
     data class RefreshToken(val value: String)
-
-    fun toEntity(): MemberEntity {
-        return MemberEntity(
-            id = this.memberId.value,
-            email = this.email.value,
-            password = this.password.value,
-            name = this.name.value,
-            nickname = this.nickname.value,
-            address = this.address.toEntity(),
-            phoneNumber = this.phoneNumber.value,
-            status = this.status,
-            role = this.role,
-            lastLoginAt = this.lastLoginAt,
-            failedLoginAttempts = this.failedLoginAttempts,
-            lockedUntil = this.lockedUntil,
-            refreshToken = this.refreshToken?.value,
-            grade = this.grade
-        )
-    }
 }

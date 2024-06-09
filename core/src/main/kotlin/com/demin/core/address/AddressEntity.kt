@@ -4,7 +4,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
 
 @Embeddable
-class Address(
+class AddressEntity(
     @Column(nullable = false)
     val zipCode: String,
 
@@ -13,4 +13,12 @@ class Address(
 
     @Column(nullable = false)
     val detailAddress: String
-)
+) {
+    fun toDto(): AddressDto {
+        return AddressDto(
+            zipCode = this.zipCode,
+            address = this.address,
+            detailAddress = this.detailAddress
+        )
+    }
+}

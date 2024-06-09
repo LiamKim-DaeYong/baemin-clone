@@ -1,6 +1,6 @@
 package com.demin.auth.adapter.out.persistence
 
-import com.demin.core.address.Address
+import com.demin.core.address.AddressEntity
 import com.demin.core.AuditableEntity
 import com.demin.core.enums.MemberGrade
 import com.demin.core.enums.MemberRole
@@ -28,7 +28,7 @@ class MemberEntity(
     val nickname: String,
 
     @Embedded
-    val address: Address,
+    val addressEntity: AddressEntity,
 
     @Column(nullable = false)
     val phoneNumber: String,
