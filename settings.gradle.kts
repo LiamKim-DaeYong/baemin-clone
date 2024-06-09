@@ -1,7 +1,7 @@
 rootProject.name = "demin"
 
 include(
-    "common",
+    "core",
     "demin-auth-service",
     "demin-order-service",
     "demin-menu-service",

@@ -1,10 +1,10 @@
 package com.demin.auth.domain
 
 import com.demin.auth.adapter.out.persistence.MemberEntity
-import com.demin.common.address.AddressDto
-import com.demin.common.enums.MemberGrade
-import com.demin.common.enums.MemberRole
-import com.demin.common.enums.MemberStatus
+import com.demin.core.address.AddressDto
+import com.demin.core.enums.MemberGrade
+import com.demin.core.enums.MemberRole
+import com.demin.core.enums.MemberStatus
 import java.time.LocalDateTime
 
 data class Member private constructor(

@@ -1,6 +1,6 @@
 package com.demin.auth.application.port.`in`.command
 
-import com.demin.common.address.AddressDto
+import com.demin.core.address.AddressDto
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern

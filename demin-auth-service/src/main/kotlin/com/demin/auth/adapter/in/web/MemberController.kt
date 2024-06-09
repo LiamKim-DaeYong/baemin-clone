@@ -6,8 +6,8 @@ import com.demin.auth.application.port.`in`.UpdateMemberUseCase
 import com.demin.auth.application.port.`in`.command.RegisterMemberCommand
 import com.demin.auth.application.port.`in`.command.UpdateMemberCommand
 import com.demin.auth.domain.Member
-import com.demin.common.hexagonal.annotations.WebAdapter
-import com.demin.common.response.ApiResponse
+import com.demin.core.hexagonal.annotations.WebAdapter
+import com.demin.core.response.ApiResponse
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

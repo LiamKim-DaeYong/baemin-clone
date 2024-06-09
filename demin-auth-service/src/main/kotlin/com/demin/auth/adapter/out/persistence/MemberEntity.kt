@@ -1,10 +1,10 @@
 package com.demin.auth.adapter.out.persistence
 
-import com.demin.common.address.Address
-import com.demin.common.AuditableEntity
-import com.demin.common.enums.MemberGrade
-import com.demin.common.enums.MemberRole
-import com.demin.common.enums.MemberStatus
+import com.demin.core.address.Address
+import com.demin.core.AuditableEntity
+import com.demin.core.enums.MemberGrade
+import com.demin.core.enums.MemberRole
+import com.demin.core.enums.MemberStatus
 import jakarta.persistence.*
 import java.time.LocalDateTime
 

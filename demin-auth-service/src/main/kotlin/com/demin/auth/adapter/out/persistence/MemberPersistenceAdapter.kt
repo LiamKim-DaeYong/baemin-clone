@@ -4,7 +4,7 @@ import com.demin.auth.application.port.out.FindMemberPort
 import com.demin.auth.application.port.out.SaveMemberPort
 import com.demin.auth.application.port.out.UpdateMemberPort
 import com.demin.auth.domain.Member
-import com.demin.common.hexagonal.annotations.PersistenceAdapter
+import com.demin.core.hexagonal.annotations.PersistenceAdapter
 
 @PersistenceAdapter
 class MemberPersistenceAdapter(

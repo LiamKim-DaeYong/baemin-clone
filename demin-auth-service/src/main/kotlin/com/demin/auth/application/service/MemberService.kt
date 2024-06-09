@@ -9,11 +9,11 @@ import com.demin.auth.application.port.out.FindMemberPort
 import com.demin.auth.application.port.out.SaveMemberPort
 import com.demin.auth.application.port.out.UpdateMemberPort
 import com.demin.auth.domain.Member
-import com.demin.common.enums.MemberGrade
-import com.demin.common.enums.MemberRole
-import com.demin.common.enums.MemberStatus
-import com.demin.common.exception.ResourceNotFoundException
-import com.demin.common.util.SnowflakeIdGenerator
+import com.demin.core.enums.MemberGrade
+import com.demin.core.enums.MemberRole
+import com.demin.core.enums.MemberStatus
+import com.demin.core.exception.ResourceNotFoundException
+import com.demin.core.util.SnowflakeIdGenerator
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
