@@ -9,7 +9,6 @@ import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
 class SecurityConfig {
-
     @Bean
     @Throws(Exception::class)
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
@@ -23,7 +22,6 @@ class SecurityConfig {
 
         return http.build()
     }
-
 
     @Bean
     fun passwordEncoder(): PasswordEncoder {

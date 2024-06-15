@@ -9,5 +9,5 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 annotation class WebAdapter(
     @get:AliasFor(annotation = RestController::class)
-    val value: String = ""
+    val value: String = "",
 )

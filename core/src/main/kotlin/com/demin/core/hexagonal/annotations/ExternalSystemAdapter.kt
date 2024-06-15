@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 annotation class ExternalSystemAdapter(
     @get:AliasFor(annotation = Component::class)
-    val value: String = ""
+    val value: String = "",
 )

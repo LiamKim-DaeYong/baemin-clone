@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class AppConfig {
-
     @Bean
     fun snowflakeIdGenerator(): SnowflakeIdGenerator {
         val workerId = System.getenv("WORKER_ID")?.toLong() ?: 1L

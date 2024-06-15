@@ -12,38 +12,43 @@ import org.springframework.web.context.request.WebRequest
 
 @RestControllerAdvice
 class GlobalExceptionHandler(private val messageSource: MessageSource) {
-
     @ExceptionHandler(CustomException::class)
     fun handleCustomException(ex: CustomException): ResponseEntity<ApiResponse<String>> {
         val locale = LocaleContextHolder.getLocale()
-        val message = messageSource.getMessage(ex.errorCode, null, null, locale)
-            ?: ex.message ?: "An error occurred"
+        val message =
+            messageSource.getMessage(ex.errorCode, null, null, locale)
+                ?: ex.message ?: "An error occurred"
 
-        val response = ApiResponse.error<String>(
-            message = message,
-            errorCode = ex.errorCode,
-            httpStatus = ex.status.value()
-        )
+        val response =
+            ApiResponse.error<String>(
+                message = message,
+                errorCode = ex.errorCode,
+                httpStatus = ex.status.value(),
+            )
 
         return ResponseEntity.status(ex.status).body(response)
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleValidationException(ex: MethodArgumentNotValidException, request: WebRequest): ResponseEntity<ApiResponse<Map<String, String?>>> {
-        val errors = ex.bindingResult.fieldErrors.associateBy(
-            { it.field },
-            { messageSource.getMessage(it, LocaleContextHolder.getLocale()) }
-        )
+    fun handleValidationException(
+        ex: MethodArgumentNotValidException,
+        request: WebRequest,
+    ): ResponseEntity<ApiResponse<Map<String, String?>>> {
+        val errors =
+            ex.bindingResult.fieldErrors.associateBy(
+                { it.field },
+                { messageSource.getMessage(it, LocaleContextHolder.getLocale()) },
+            )
 
-        val response = ApiResponse.error<Map<String, String?>>(
-            message = "Validation failed",
-            data = errors,
-            httpStatus = HttpStatus.UNPROCESSABLE_ENTITY.value()
-        )
+        val response =
+            ApiResponse.error<Map<String, String?>>(
+                message = "Validation failed",
+                data = errors,
+                httpStatus = HttpStatus.UNPROCESSABLE_ENTITY.value(),
+            )
 
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response)
     }
-
 
     @ExceptionHandler(Exception::class)
     fun handleException(ex: Exception): ResponseEntity<ApiResponse<String>> {

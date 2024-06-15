@@ -12,16 +12,16 @@ import org.springframework.kafka.core.ProducerFactory
 
 @Configuration
 class KafkaProducerConfig {
-
     @Bean
     fun producerFactory(
-        @Value("\${kafka.clusters.bootstrap-servers}") bootstrapServers: String
+        @Value("\${kafka.clusters.bootstrap-servers}") bootstrapServers: String,
     ): ProducerFactory<String, Any> {
-        val configProps = hashMapOf<String, Any>(
-            ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServers,
-            ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,
-            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to JsonSerializer::class.java
-        )
+        val configProps =
+            hashMapOf<String, Any>(
+                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServers,
+                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,
+                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to JsonSerializer::class.java,
+            )
 
         return DefaultKafkaProducerFactory(configProps)
     }

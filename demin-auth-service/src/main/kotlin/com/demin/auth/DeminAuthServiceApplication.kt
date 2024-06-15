@@ -9,5 +9,5 @@ import org.springframework.context.annotation.ComponentScan
 class DeminAuthServiceApplication
 
 fun main(args: Array<String>) {
-	runApplication<DeminAuthServiceApplication>(*args)
+    runApplication<DeminAuthServiceApplication>(*args)
 }

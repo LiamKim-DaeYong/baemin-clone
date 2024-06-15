@@ -2,7 +2,7 @@ package com.demin.core.util
 
 class SnowflakeIdGenerator(
     private val workerId: Long,
-    private val datacenterId: Long
+    private val datacenterId: Long,
 ) {
     private val twepoch = 1288834974657L
     private val workerIdBits = 5L
@@ -20,7 +20,9 @@ class SnowflakeIdGenerator(
 
     init {
         require(!(workerId > maxWorkerId || workerId < 0)) { "worker Id can't be greater than $maxWorkerId or less than 0" }
-        require(!(datacenterId > maxDatacenterId || datacenterId < 0)) { "datacenter Id can't be greater than $maxDatacenterId or less than 0" }
+        require(
+            !(datacenterId > maxDatacenterId || datacenterId < 0),
+        ) { "datacenter Id can't be greater than $maxDatacenterId or less than 0" }
     }
 
     @Synchronized
@@ -41,7 +43,8 @@ class SnowflakeIdGenerator(
         }
 
         lastTimestamp = timestamp
-        val nextId = (timestamp - twepoch shl timestampLeftShift.toInt()) or
+        val nextId =
+            (timestamp - twepoch shl timestampLeftShift.toInt()) or
                 (datacenterId shl datacenterIdShift.toInt()) or
                 (workerId shl workerIdShift.toInt()) or
                 sequence
