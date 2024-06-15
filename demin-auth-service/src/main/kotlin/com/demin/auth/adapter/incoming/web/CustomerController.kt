@@ -4,7 +4,7 @@ import com.demin.auth.application.port.incoming.customer.FindCustomerUseCase
 import com.demin.auth.application.port.incoming.customer.RegisterCustomerUseCase
 import com.demin.auth.application.port.incoming.customer.UpdateCustomerUseCase
 import com.demin.auth.application.port.incoming.customer.command.RegisterCustomerCommand
-import com.demin.auth.application.port.incoming.customer.command.UpdateCustomerCommand
+import com.demin.auth.application.port.incoming.customer.command.UpdateCustomerInfoCommand
 import com.demin.auth.domain.Customer
 import com.demin.core.hexagonal.annotations.WebAdapter
 import com.demin.core.response.ApiResponse
@@ -57,9 +57,9 @@ class CustomerController(
     @PatchMapping("/{customerId}")
     fun updateCustomer(
         @PathVariable customerId: String,
-        @RequestBody @Valid command: UpdateCustomerCommand,
+        @RequestBody @Valid command: UpdateCustomerInfoCommand,
     ): ResponseEntity<ApiResponse<Customer>> {
-        val updatedCustomer = updateCustomerUseCase.updateCustomer(command.copy(customerId = customerId))
+        val updatedCustomer = updateCustomerUseCase.updateCustomerInfo(command.copy(customerId = customerId))
         return ResponseEntity.ok(ApiResponse.success(updatedCustomer))
     }
 }

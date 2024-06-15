@@ -12,25 +12,19 @@ data class ApiResponse<T>(
             data: T,
             message: String? = null,
             httpStatus: Int = 200,
-        ): ApiResponse<T> {
-            return ApiResponse(Status.SUCCESS, message, data, httpStatus)
-        }
+        ): ApiResponse<T> = ApiResponse(Status.SUCCESS, message, data, httpStatus)
 
         fun <T> fail(
             message: String? = null,
             data: T? = null,
             httpStatus: Int = 400,
-        ): ApiResponse<T> {
-            return ApiResponse(Status.FAIL, message, data, httpStatus)
-        }
+        ): ApiResponse<T> = ApiResponse(Status.FAIL, message, data, httpStatus)
 
         fun <T> error(
             message: String,
             errorCode: String? = null,
             data: T? = null,
             httpStatus: Int = 500,
-        ): ApiResponse<T> {
-            return ApiResponse(Status.ERROR, message, data, httpStatus, errorCode)
-        }
+        ): ApiResponse<T> = ApiResponse(Status.ERROR, message, data, httpStatus, errorCode)
     }
 }

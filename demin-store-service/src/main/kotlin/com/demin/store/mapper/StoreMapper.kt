@@ -13,7 +13,7 @@ fun StoreEntity.toStore(): Store =
     generateStore(
         storeId = StoreId(this.id),
         storeName = StoreName(this.storeName),
-        storeAddress = this.storeAddress.toDto(),
+        storeAddress = this.storeAddress.toAddressDto(),
         operatingHours =
             operatingHours.map {
                 OperatingHour(

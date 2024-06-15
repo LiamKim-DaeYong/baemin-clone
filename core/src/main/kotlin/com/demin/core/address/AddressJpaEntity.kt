@@ -12,11 +12,10 @@ class AddressJpaEntity(
     @Column(nullable = false)
     val detailAddress: String,
 ) {
-    fun toDto(): AddressDto {
-        return AddressDto(
+    fun toAddressDto(): AddressDto =
+        AddressDto(
             zipCode = this.zipCode,
             address = this.address,
             detailAddress = this.detailAddress,
         )
-    }
 }

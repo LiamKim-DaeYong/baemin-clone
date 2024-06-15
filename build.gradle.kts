@@ -17,6 +17,7 @@ val postgresqlVersion: String by project
 val kotestVersion: String by project
 val mockkVersion: String by project
 val kotestExtensionsVersion: String by project
+val springmockkVersion: String by project
 java.sourceCompatibility = JavaVersion.valueOf("VERSION_$javaVersion")
 
 allprojects {
@@ -54,6 +55,7 @@ subprojects {
         testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
         testImplementation("io.mockk:mockk:$mockkVersion")
         testImplementation("io.kotest.extensions:kotest-extensions-spring:$kotestExtensionsVersion")
+        testImplementation("com.ninja-squad:springmockk:$springmockkVersion")
         annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
         kapt("org.springframework.boot:spring-boot-configuration-processor")
     }
@@ -76,17 +78,17 @@ subprojects {
     tasks.withType<Test> {
         useJUnitPlatform()
     }
-}
 
-ktlint {
-    debug.set(false)
-    verbose.set(true)
-    android.set(false)
-    outputToConsole.set(true)
-    ignoreFailures.set(false)
-    enableExperimentalRules.set(false)
-    filter {
-        exclude("**/generated/**")
-        include("**/kotlin/**")
+    ktlint {
+        debug.set(false)
+        verbose.set(true)
+        android.set(false)
+        outputToConsole.set(true)
+        ignoreFailures.set(false)
+        enableExperimentalRules.set(false)
+        filter {
+            exclude("**/generated/**")
+            include("**/kotlin/**")
+        }
     }
 }

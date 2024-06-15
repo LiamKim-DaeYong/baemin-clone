@@ -1,31 +1,37 @@
 package com.demin.auth.application.port.incoming.customer.command
 
 import com.demin.core.address.AddressDto
+import com.demin.core.util.RegexPatterns
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 
 data class RegisterCustomerCommand(
-    @field:NotBlank(message = "Email must not be blank")
-    @field:Email(message = "Email should be valid")
+    @field:NotBlank(message = "{email.not_blank}")
+    @field:Email(message = "{email.invalid}")
     val email: String,
-    @field:NotBlank(message = "Password must not be blank")
-    @field:Size(min = 8, message = "Password must be at least 8 characters long")
+
+    @field:NotBlank(message = "{password.not_blank}")
+    @field:Size(min = 8, message = "{password.size}")
     @field:Pattern(
-        regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}\$",
-        message = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+        regexp = RegexPatterns.PASSWORD,
+        message = "{password.pattern}",
     )
     val password: String,
-    @field:NotBlank(message = "Name must not be blank")
+
+    @field:NotBlank(message = "{name.not_blank}")
     val name: String,
-    @field:NotBlank(message = "Nickname must not be blank")
+
+    @field:NotBlank(message = "{nickname.not_blank}")
     val nickname: String,
+
     val address: AddressDto,
-    @field:NotBlank(message = "Phone number must not be blank")
+
+    @field:NotBlank(message = "{phone_number.not_blank}")
     @field:Pattern(
-        regexp = "^(\\+\\d{1,3}[- ]?)?(010|011|016|017|018|019)([- ]?\\d{3,4})[- ]?\\d{4}\$",
-        message = "Phone number should be valid",
+        regexp = RegexPatterns.PHONE_NUMBER,
+        message = "{phone_number.invalid}",
     )
     val phoneNumber: String,
 )

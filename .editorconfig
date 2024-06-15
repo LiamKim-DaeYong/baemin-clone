@@ -1,0 +1,38 @@
+# .editorconfig file
+
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+continuation_indent_size = 4
+max_line_length = 120
+insert_final_newline = true
+end_of_line = lf
+charset = utf-8
+
+[*.{kt,kts}]
+max_line_length = 150
+ij_kotlin_allow_trailing_comma = true
+ij_kotlin_allow_trailing_comma_on_call_site = true
+ij_kotlin_blank_lines_around_functions = true
+
+[*.kt]
+ktlint_standard_no-wildcard-imports = true
+ktlint_standard_trailing-comma-on-declaration-site = true
+ktlint_standard_trailing-comma-on-call-site = true
+ktlint_standard_no-blank-line-in-list = disabled
+ktlint_standard_no-wildcard-imports = true
+
+# Java files
+[*.java]
+indent_size = 4
+continuation_indent_size = 4
+
+# Markdown files
+[*.md]
+max_line_length = off
+
+# YAML files
+[*.{yml,yaml}]
+indent_size = 2

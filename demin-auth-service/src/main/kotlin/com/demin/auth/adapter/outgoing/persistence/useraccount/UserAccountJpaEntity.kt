@@ -1,4 +1,4 @@
-package com.demin.auth.adapter.out.persistence.useraccount
+package com.demin.auth.adapter.outgoing.persistence.useraccount
 
 import com.demin.auth.domain.UserAccount.UserRole.Role
 import com.demin.auth.domain.UserAccount.UserStatus.Statue
@@ -18,22 +18,30 @@ class UserAccountJpaEntity(
     @Id
     @Column(name = "user_account_id", length = 36, nullable = false, updatable = false)
     val id: String,
+
     @Column(nullable = false, unique = true)
     val email: String,
+
     @Column(nullable = false)
     val password: String,
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     val role: Role,
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     var status: Statue,
+
     @Column(nullable = true)
-    val lastLoginAt: LocalDateTime? = null,
+    val lastLoginAt: LocalDateTime?,
+
     @Column(nullable = false)
-    val failedLoginAttempts: Int = 0,
+    val failedLoginAttempts: Int,
+
     @Column(nullable = true)
-    val lockedUntil: LocalDateTime? = null,
+    val lockedUntil: LocalDateTime?,
+
     @Column(nullable = true)
-    val refreshToken: String? = null,
+    val refreshToken: String?,
 ) : AuditableEntity()

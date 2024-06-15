@@ -1,5 +1,6 @@
 package com.demin.auth.domain
 
+import com.demin.auth.adapter.outgoing.persistence.useraccount.UserAccountJpaEntity
 import java.time.LocalDateTime
 
 class UserAccount private constructor(
@@ -7,11 +8,11 @@ class UserAccount private constructor(
     val email: UserEmail,
     val password: UserPassword,
     val role: UserRole,
-    val status: UserStatus = UserStatus(UserStatus.Statue.ACTIVE),
-    val lastLoginAt: UserLastLoginAt? = null,
-    val failedLoginAttempts: UserFailedLoginAttempts = UserFailedLoginAttempts(0),
-    val lockedUntil: UserLockedUntil? = null,
-    val refreshToken: UserRefreshToken? = null,
+    val status: UserStatus,
+    val lastLoginAt: UserLastLoginAt?,
+    val failedLoginAttempts: UserFailedLoginAttempts,
+    val lockedUntil: UserLockedUntil?,
+    val refreshToken: UserRefreshToken?,
 ) {
     companion object {
         fun create(
@@ -19,26 +20,64 @@ class UserAccount private constructor(
             email: UserEmail,
             password: UserPassword,
             role: UserRole,
-        ): UserAccount {
-            return UserAccount(id, email, password, role)
-        }
+        ): UserAccount =
+            UserAccount(
+                id = id,
+                email = email,
+                password = password,
+                role = role,
+                status = UserStatus(UserStatus.Statue.ACTIVE),
+                lastLoginAt = null,
+                failedLoginAttempts = UserFailedLoginAttempts(0),
+                lockedUntil = null,
+                refreshToken = null,
+            )
+
+        fun fromJpaEntity(jpaEntity: UserAccountJpaEntity): UserAccount =
+            UserAccount(
+                id = UserAccountId(jpaEntity.id),
+                email = UserEmail(jpaEntity.email),
+                password = UserPassword(jpaEntity.password),
+                role = UserRole(jpaEntity.role),
+                status = UserStatus(jpaEntity.status),
+                lastLoginAt = jpaEntity.lastLoginAt?.let { UserLastLoginAt(it) },
+                failedLoginAttempts = UserFailedLoginAttempts(jpaEntity.failedLoginAttempts),
+                lockedUntil = jpaEntity.lockedUntil?.let { UserLockedUntil(it) },
+                refreshToken = jpaEntity.refreshToken?.let { UserRefreshToken(it) },
+            )
     }
 
-    data class UserAccountId(val value: String)
+    data class UserAccountId(
+        val value: String,
+    )
 
-    data class UserEmail(val value: String)
+    data class UserEmail(
+        val value: String,
+    )
 
-    data class UserPassword(val value: String)
+    data class UserPassword(
+        val value: String,
+    )
 
-    data class UserLastLoginAt(val value: LocalDateTime)
+    data class UserLastLoginAt(
+        val value: LocalDateTime,
+    )
 
-    data class UserFailedLoginAttempts(val value: Int)
+    data class UserFailedLoginAttempts(
+        val value: Int,
+    )
 
-    data class UserLockedUntil(val value: LocalDateTime)
+    data class UserLockedUntil(
+        val value: LocalDateTime,
+    )
 
-    data class UserRefreshToken(val value: String)
+    data class UserRefreshToken(
+        val value: String,
+    )
 
-    data class UserRole(val value: Role) {
+    data class UserRole(
+        val value: Role,
+    ) {
         enum class Role {
             CUSTOMER,
             RIDER,
@@ -47,7 +86,9 @@ class UserAccount private constructor(
         }
     }
 
-    data class UserStatus(val value: Statue) {
+    data class UserStatus(
+        val value: Statue,
+    ) {
         enum class Statue {
             ACTIVE,
             INACTIVE,

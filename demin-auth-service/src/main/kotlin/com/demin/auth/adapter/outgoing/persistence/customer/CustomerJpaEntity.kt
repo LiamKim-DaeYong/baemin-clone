@@ -1,6 +1,6 @@
-package com.demin.auth.adapter.out.persistence.customer
+package com.demin.auth.adapter.outgoing.persistence.customer
 
-import com.demin.auth.adapter.out.persistence.useraccount.UserAccountJpaEntity
+import com.demin.auth.adapter.outgoing.persistence.useraccount.UserAccountJpaEntity
 import com.demin.auth.domain.Customer.CustomerGrade.Grade
 import com.demin.core.AuditableEntity
 import com.demin.core.address.AddressJpaEntity
@@ -23,17 +23,23 @@ class CustomerJpaEntity(
     @Id
     @Column(name = "customer_id", length = 36, nullable = false, updatable = false)
     val id: String,
+
     @Column(nullable = false)
     val name: String,
+
     @Column(nullable = false)
     val nickname: String,
+
     @Embedded
     val address: AddressJpaEntity,
+
     @Column(nullable = false)
     val phoneNumber: String,
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    val grade: Grade = Grade.BRONZE,
+    val grade: Grade,
+
     @MapsId
     @OneToOne(
         fetch = FetchType.LAZY,

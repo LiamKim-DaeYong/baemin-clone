@@ -5,13 +5,16 @@ import org.springframework.context.MessageSource
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.FieldError
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
 
 @RestControllerAdvice
-class GlobalExceptionHandler(private val messageSource: MessageSource) {
+class GlobalExceptionHandler(
+    private val messageSource: MessageSource,
+) {
     @ExceptionHandler(CustomException::class)
     fun handleCustomException(ex: CustomException): ResponseEntity<ApiResponse<String>> {
         val locale = LocaleContextHolder.getLocale()
@@ -33,15 +36,16 @@ class GlobalExceptionHandler(private val messageSource: MessageSource) {
     fun handleValidationException(
         ex: MethodArgumentNotValidException,
         request: WebRequest,
-    ): ResponseEntity<ApiResponse<Map<String, String?>>> {
+    ): ResponseEntity<ApiResponse<Map<String, List<String>>>> {
         val errors =
-            ex.bindingResult.fieldErrors.associateBy(
-                { it.field },
-                { messageSource.getMessage(it, LocaleContextHolder.getLocale()) },
-            )
+            ex.bindingResult.fieldErrors.groupBy(FieldError::getField).mapValues { entry ->
+                entry.value.map { fieldError ->
+                    messageSource.getMessage(fieldError, LocaleContextHolder.getLocale())
+                }
+            }
 
         val response =
-            ApiResponse.error<Map<String, String?>>(
+            ApiResponse.error(
                 message = "Validation failed",
                 data = errors,
                 httpStatus = HttpStatus.UNPROCESSABLE_ENTITY.value(),
