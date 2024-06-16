@@ -1,4 +1,4 @@
-package com.demin.auth.application.service
+package com.demin.auth.application.service.customer
 
 import com.demin.auth.application.port.incoming.customer.FindCustomerUseCase
 import com.demin.auth.application.port.outgoing.customer.FindCustomerPort
@@ -15,7 +15,7 @@ class CustomerQueryService(
     override fun findCustomerById(customerId: String): Customer {
         // Find the Customer by ID
         return findCustomerPort.findById(customerId)
-            ?: throw ResourceNotFoundException("Customer not found")
+            ?: throw ResourceNotFoundException("Customer with ID $customerId not found")
     }
 
     override fun findAllCustomers(): List<Customer> {

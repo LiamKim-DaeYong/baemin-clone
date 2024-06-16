@@ -7,6 +7,7 @@ spring:
     username: common_user
     password: common_password
     driver-class-name: org.postgresql.Driver
+
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
@@ -14,6 +15,9 @@ spring:
     properties:
       hibernate:
         default_schema: auth
+
+  messages:
+    basename: messages
 
 kafka:
   clusters:

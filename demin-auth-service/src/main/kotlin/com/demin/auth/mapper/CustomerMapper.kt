@@ -3,7 +3,7 @@ package com.demin.auth.mapper
 import com.demin.auth.adapter.outgoing.persistence.customer.CustomerJpaEntity
 import com.demin.auth.domain.Customer
 
-fun Customer.toEntity(): CustomerJpaEntity =
+fun Customer.toEntity() =
     CustomerJpaEntity(
         id = id.value,
         name = name.value,
@@ -14,4 +14,4 @@ fun Customer.toEntity(): CustomerJpaEntity =
         userAccount = userAccount.toEntity(),
     )
 
-fun CustomerJpaEntity.toDomain(): Customer = Customer.fromJpaEntity(this)
+fun CustomerJpaEntity.toDomain() = Customer.fromJpaEntity(this)

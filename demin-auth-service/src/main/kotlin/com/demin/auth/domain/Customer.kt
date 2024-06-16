@@ -4,7 +4,6 @@ import com.demin.auth.adapter.outgoing.persistence.customer.CustomerJpaEntity
 import com.demin.core.address.AddressDto
 
 class Customer private constructor(
-    val id: CustomerId,
     val name: CustomerName,
     val nickname: CustomerNickname,
     val address: CustomerAddress,
@@ -12,6 +11,9 @@ class Customer private constructor(
     val grade: CustomerGrade,
     val userAccount: UserAccount,
 ) {
+    val id: CustomerId
+        get() = CustomerId(userAccount.id.value)
+
     companion object {
         fun create(
             customerName: CustomerName,
@@ -19,20 +21,17 @@ class Customer private constructor(
             customerAddress: CustomerAddress,
             customerPhoneNumber: CustomerPhoneNumber,
             userAccount: UserAccount,
-        ): Customer =
-            Customer(
-                id = CustomerId(userAccount.id.value),
-                name = customerName,
-                nickname = customerNickname,
-                address = customerAddress,
-                phoneNumber = customerPhoneNumber,
-                grade = CustomerGrade(CustomerGrade.Grade.BRONZE),
-                userAccount = userAccount,
-            )
+        ) = Customer(
+            name = customerName,
+            nickname = customerNickname,
+            address = customerAddress,
+            phoneNumber = customerPhoneNumber,
+            grade = CustomerGrade(CustomerGrade.Grade.BRONZE),
+            userAccount = userAccount,
+        )
 
-        fun fromJpaEntity(jpaEntity: CustomerJpaEntity): Customer =
+        fun fromJpaEntity(jpaEntity: CustomerJpaEntity) =
             Customer(
-                id = CustomerId(jpaEntity.id),
                 name = CustomerName(jpaEntity.name),
                 nickname = CustomerNickname(jpaEntity.nickname),
                 address = CustomerAddress(jpaEntity.address.toAddressDto()),
@@ -48,16 +47,14 @@ class Customer private constructor(
         newNickname: CustomerNickname?,
         newAddress: CustomerAddress?,
         newPhoneNumber: CustomerPhoneNumber?,
-    ): Customer =
-        Customer(
-            id = this.id,
-            name = newName ?: this.name,
-            nickname = newNickname ?: this.nickname,
-            address = newAddress ?: this.address,
-            phoneNumber = newPhoneNumber ?: this.phoneNumber,
-            grade = this.grade,
-            userAccount = this.userAccount,
-        )
+    ) = Customer(
+        name = newName ?: this.name,
+        nickname = newNickname ?: this.nickname,
+        address = newAddress ?: this.address,
+        phoneNumber = newPhoneNumber ?: this.phoneNumber,
+        grade = this.grade,
+        userAccount = this.userAccount,
+    )
 
     data class CustomerId(
         val value: String,

@@ -1,4 +1,4 @@
-package com.demin.auth.application.service
+package com.demin.auth.application.service.customer
 
 import com.demin.auth.application.port.outgoing.customer.FindCustomerPort
 import com.demin.auth.testdata.TestCustomerDataFactory.createTestCustomer

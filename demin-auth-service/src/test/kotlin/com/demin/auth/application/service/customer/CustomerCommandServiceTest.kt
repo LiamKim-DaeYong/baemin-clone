@@ -1,4 +1,4 @@
-package com.demin.auth.application.service
+package com.demin.auth.application.service.customer
 
 import com.demin.auth.application.port.incoming.customer.command.UpdateCustomerInfoCommand
 import com.demin.auth.application.port.outgoing.customer.FindCustomerPort
@@ -71,7 +71,6 @@ class CustomerCommandServiceTest :
 
             val command =
                 UpdateCustomerInfoCommand(
-                    customerId = customerId,
                     name = "Updated Name",
                     nickname = null,
                     address = null,
@@ -88,7 +87,7 @@ class CustomerCommandServiceTest :
 
             every { saveCustomerPort.save(any()) } returns updatedCustomer
 
-            val result = customerCommandService.updateCustomerInfo(command)
+            val result = customerCommandService.updateCustomerInfo(customerId, command)
 
             result.name.value shouldBe command.name
             result.nickname.value shouldBe existingCustomer.nickname.value
@@ -104,7 +103,6 @@ class CustomerCommandServiceTest :
             val customerId = "123456"
             val command =
                 UpdateCustomerInfoCommand(
-                    customerId = customerId,
                     name = null,
                     nickname = null,
                     address = null,
@@ -114,7 +112,7 @@ class CustomerCommandServiceTest :
             every { findCustomerPort.findById(customerId) } returns null
 
             shouldThrow<ResourceNotFoundException> {
-                customerCommandService.updateCustomerInfo(command)
+                customerCommandService.updateCustomerInfo(customerId, command)
             }
         }
     })

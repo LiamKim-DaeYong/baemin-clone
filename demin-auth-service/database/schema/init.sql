@@ -29,8 +29,23 @@ CREATE TABLE IF NOT EXISTS auth.customer (
     created_by VARCHAR(255) NOT NULL,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_by VARCHAR(255),
-    user_account_id VARCHAR(36) NOT NULL,
     CONSTRAINT fk_user_account
-        FOREIGN KEY (user_account_id)
+        FOREIGN KEY (customer_id)
+        REFERENCES auth.user_account(user_account_id)
+);
+
+CREATE TABLE IF NOT EXISTS auth.store_owner (
+    store_owner_id VARCHAR(36) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(255) NOT NULL,
+    zip_code VARCHAR(10) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    detail_address VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by VARCHAR(255) NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_by VARCHAR(255),
+    CONSTRAINT fk_user_account
+        FOREIGN KEY (store_owner_id)
         REFERENCES auth.user_account(user_account_id)
 );

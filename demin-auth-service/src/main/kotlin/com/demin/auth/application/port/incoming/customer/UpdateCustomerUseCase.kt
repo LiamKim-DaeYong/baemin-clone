@@ -6,5 +6,8 @@ import com.demin.core.hexagonal.annotations.UseCase
 
 @UseCase
 interface UpdateCustomerUseCase {
-    fun updateCustomerInfo(command: UpdateCustomerInfoCommand): Customer
+    fun updateCustomerInfo(
+        customerId: String,
+        command: UpdateCustomerInfoCommand,
+    ): Customer
 }

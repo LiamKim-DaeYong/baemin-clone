@@ -1,12 +1,12 @@
 package com.demin.auth.adapter.incoming.web
 
-import com.demin.auth.application.port.incoming.customer.command.UpdateCustomerInfoCommand
-import com.demin.auth.application.service.customer.CustomerCommandService
-import com.demin.auth.application.service.customer.CustomerQueryService
+import com.demin.auth.application.port.incoming.storeowner.command.UpdateStoreOwnerInfoCommand
+import com.demin.auth.application.service.store.StoreOwnerCommandService
+import com.demin.auth.application.service.store.StoreOwnerQueryService
 import com.demin.auth.config.SecurityConfig
-import com.demin.auth.domain.Customer
-import com.demin.auth.testdata.TestCustomerDataFactory.createTestCustomer
-import com.demin.auth.testdata.TestCustomerDataFactory.createTestRegisterCustomerCommand
+import com.demin.auth.domain.StoreOwner
+import com.demin.auth.testdata.TestStoreOwnerDataFactory.createTestRegisterStoreOwnerCommand
+import com.demin.auth.testdata.TestStoreOwnerDataFactory.createTestStoreOwner
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.FunSpec
@@ -26,78 +26,77 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @WebMvcTest(
-    controllers = [CustomerController::class],
+    controllers = [StoreOwnerController::class],
     excludeFilters = [
         ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = [SecurityConfig::class]),
     ],
 )
-class CustomerControllerTest(
+class StoreOwnerControllerTest(
     private val mockMvc: MockMvc,
     private val objectMapper: ObjectMapper,
-    @MockkBean private val customerQueryService: CustomerQueryService,
-    @MockkBean private val customerCommandService: CustomerCommandService,
+    @MockkBean private val storeOwnerQueryService: StoreOwnerQueryService,
+    @MockkBean private val storeOwnerCommandStoreOwner: StoreOwnerCommandService,
 ) : FunSpec({
 
-        context("GET /api/v1/customers") {
-            test("should return all customers") {
-                val customers =
+        context("GET /api/v1/store-owners") {
+            test("should return all store owners") {
+                val storeOwners =
                     listOf(
-                        createTestCustomer("customerId1"),
-                        createTestCustomer("customerId2"),
-                        createTestCustomer("customerId3"),
+                        createTestStoreOwner("storeOwnerId1"),
+                        createTestStoreOwner("storeOwnerId2"),
+                        createTestStoreOwner("storeOwnerId3"),
                     )
 
-                every { customerQueryService.findAllCustomers() } returns customers
+                every { storeOwnerQueryService.findAllStoreOwners() } returns storeOwners
 
                 mockMvc
-                    .perform(get("/api/v1/customers"))
+                    .perform(get("/api/v1/store-owners"))
                     .andExpect(status().isOk)
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                     .andExpect(jsonPath("$.data").isArray)
-                    .andExpect(jsonPath("$.data[0].id.value").value(customers[0].id.value))
+                    .andExpect(jsonPath("$.data[0].id.value").value(storeOwners[0].id.value))
             }
 
-            test("should return a customer by id") {
-                val customer = createTestCustomer("customerId1")
-                every { customerQueryService.findCustomerById("1") } returns customer
+            test("should return a store owner by id") {
+                val storeOwner = createTestStoreOwner("storeOwnerId1")
+                every { storeOwnerQueryService.findStoreOwnerById("1") } returns storeOwner
 
                 mockMvc
-                    .perform(get("/api/v1/customers/1"))
+                    .perform(get("/api/v1/store-owners/1"))
                     .andExpect(status().isOk)
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(jsonPath("$.data.id.value").value(customer.id.value))
+                    .andExpect(jsonPath("$.data.id.value").value(storeOwner.id.value))
             }
         }
 
-        context("POST /api/v1/customers") {
-            test("should register a new customer") {
-                val command = createTestRegisterCustomerCommand()
+        context("POST /api/v1/store-owners") {
+            test("should register a new store owner") {
+                val command = createTestRegisterStoreOwnerCommand()
 
-                val customer = createTestCustomer("123456")
-                every { customerCommandService.registerCustomer(any()) } returns customer
+                val storeOwner = createTestStoreOwner("123456")
+                every { storeOwnerCommandStoreOwner.registerStoreOwner(any()) } returns storeOwner
 
                 mockMvc
                     .perform(
-                        post("/api/v1/customers")
+                        post("/api/v1/store-owners")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(command)),
                     ).andExpect(status().isCreated)
                     .andExpect(header().exists("Location"))
-                    .andExpect(jsonPath("$.data.id.value").value(customer.id.value))
+                    .andExpect(jsonPath("$.data.id.value").value(storeOwner.id.value))
             }
 
-            test("should return validation error for invalid register customer request") {
+            test("should return validation error for invalid register store owner request") {
                 val command =
-                    createTestRegisterCustomerCommand(
+                    createTestRegisterStoreOwnerCommand(
                         email = "invalid-email",
                         password = "short",
                         name = "",
-                        nickname = "",
                     )
 
                 mockMvc
                     .perform(
-                        post("/api/v1/customers")
+                        post("/api/v1/store-owners")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(command)),
                     ).andExpect(status().isUnprocessableEntity)
@@ -113,38 +112,35 @@ class CustomerControllerTest(
                             ),
                         ),
                     ).andExpect(jsonPath("$.data.name").value("Name must not be blank"))
-                    .andExpect(jsonPath("$.data.nickname").value("Nickname must not be blank"))
             }
         }
 
-        context("PATCH /api/v1/customers/{customerId}") {
-            test("should update a customer") {
-                val customerId = "testId"
+        context("PATCH /api/v1/StoreOwners/{StoreOwnerId}") {
+            test("should update a StoreOwner") {
+                val storeOwnerId = "testId"
                 val command =
-                    UpdateCustomerInfoCommand(
+                    UpdateStoreOwnerInfoCommand(
                         name = "Updated Name",
-                        nickname = null,
                         address = null,
                         phoneNumber = null,
                     )
 
-                val updatedCustomer =
-                    createTestCustomer(customerId).updateCustomerInfo(
-                        newName = Customer.CustomerName(command.name!!),
-                        newNickname = null,
+                val updatedStoreOwner =
+                    createTestStoreOwner(storeOwnerId).updateStoreOwnerInfo(
+                        newName = StoreOwner.StoreOwnerName(command.name!!),
                         newAddress = null,
                         newPhoneNumber = null,
                     )
-                every { customerCommandService.updateCustomerInfo(any(), any()) } returns updatedCustomer
+                every { storeOwnerCommandStoreOwner.updateStoreOwnerInfo(any(), any()) } returns updatedStoreOwner
 
                 mockMvc
                     .perform(
-                        patch("/api/v1/customers/1")
+                        patch("/api/v1/store-owners/1")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(command)),
                     ).andExpect(status().isOk)
-                    .andExpect(jsonPath("$.data.id.value").value(updatedCustomer.id.value))
-                    .andExpect(jsonPath("$.data.name.value").value(updatedCustomer.name.value))
+                    .andExpect(jsonPath("$.data.id.value").value(updatedStoreOwner.id.value))
+                    .andExpect(jsonPath("$.data.name.value").value(updatedStoreOwner.name.value))
             }
         }
     })

@@ -1,4 +1,4 @@
-package com.demin.auth.application.port.incoming.customer.command
+package com.demin.auth.application.port.incoming.storeowner.command
 
 import com.demin.core.address.AddressDto
 import com.demin.core.util.RegexPatterns
@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 
-data class RegisterCustomerCommand(
+class RegisterStoreOwnerCommand(
     @field:NotBlank(message = "{email.not_blank}")
     @field:Email(message = "{email.invalid}")
     val email: String,
@@ -23,9 +23,6 @@ data class RegisterCustomerCommand(
 
     @field:NotBlank(message = "{name.not_blank}")
     val name: String,
-
-    @field:NotBlank(message = "{nickname.not_blank}")
-    val nickname: String,
 
     @field:Valid
     val address: AddressDto,

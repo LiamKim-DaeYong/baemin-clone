@@ -8,6 +8,7 @@ import com.demin.auth.application.port.incoming.customer.command.UpdateCustomerI
 import com.demin.auth.domain.Customer
 import com.demin.core.hexagonal.annotations.WebAdapter
 import com.demin.core.response.ApiResponse
+import com.demin.core.util.UriUtil
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 
 @WebAdapter
 @RequestMapping("/api/v1/customers")
@@ -44,22 +44,17 @@ class CustomerController(
         @RequestBody @Valid command: RegisterCustomerCommand,
     ): ResponseEntity<ApiResponse<Customer>> {
         val customer = registerCustomerUseCase.registerCustomer(command)
-        val location =
-            ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{customerId}")
-                .buildAndExpand(customer.id.value)
-                .toUri()
+        val location = UriUtil.createLocationUri("/{customerId}", customer.id.value)
 
         return ResponseEntity.created(location).body(ApiResponse.success(customer))
     }
 
     @PatchMapping("/{customerId}")
-    fun updateCustomer(
+    fun updateCustomerInfo(
         @PathVariable customerId: String,
         @RequestBody @Valid command: UpdateCustomerInfoCommand,
     ): ResponseEntity<ApiResponse<Customer>> {
-        val updatedCustomer = updateCustomerUseCase.updateCustomerInfo(command.copy(customerId = customerId))
+        val updatedCustomer = updateCustomerUseCase.updateCustomerInfo(customerId, command)
         return ResponseEntity.ok(ApiResponse.success(updatedCustomer))
     }
 }
